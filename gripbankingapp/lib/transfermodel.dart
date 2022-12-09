@@ -4,7 +4,7 @@ class transfer {
   int?  id;
   int?  amount;
   int?  sender;
-  int?  receiver ;
+  int?  receiver;
 
  transfer({this.id ,this.amount,  this.sender,  this.receiver, });
   // to get data

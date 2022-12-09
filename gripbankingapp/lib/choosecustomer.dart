@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:gripbankingapp/customerprofile.dart';
 import 'package:gripbankingapp/customerspage.dart';
 import 'package:gripbankingapp/transfermodel.dart';
@@ -29,9 +31,9 @@ class _TransferProcessState extends State<TransferProcess> {
  var transferamount_controller = TextEditingController();
   final bar = SnackBar(content: Text('you donot have enough balance'),);
   final bar2 = SnackBar(content: Text('balance transfered successfully'),);
+
   bool fetching =true;
   late Data db;
-
   @override
   void initState(){
     super.initState();
@@ -48,19 +50,25 @@ class _TransferProcessState extends State<TransferProcess> {
     setState((){
       fetching =false;});
   }
+
   @override
   Widget build(BuildContext context) {
+
+    int total =(int.parse(widget.balance.toString())) - 0;
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(title: Row(
         children: [
-          IconButton(onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> customerprofile(updateUi: updateUi, name: widget.name,email: widget.email,id: widget.id,balance:(int.parse(widget.balance.toString())) -
-                (int.parse(transferamount_controller.text)),),));
-          }, icon: Icon(Icons.arrow_back)),
+
           Text("Transfer To",style: TextStyle(color: Colors.blue[900],),),
         ],
-      ),centerTitle: true,backgroundColor: Colors.yellow[200],),
+      ),centerTitle: true,backgroundColor: Colors.yellow[200],leading:  InkWell(  onTap: ()async { await Get.to(()=> customerprofile(id: widget.id,name: widget.name,email: widget.email,balance: total
+      ),);
+      setState(() {
+        getData();
+      });
+      },
+        child: Icon(Icons.arrow_back),), ),
       body: fetching?
 
       CircularProgressIndicator(): ListView.builder(
@@ -78,8 +86,9 @@ color: Colors.blue[900],
                       Text(datas[index].name!,style: TextStyle(fontSize: 20,color: Colors.white),),
                       SizedBox(height: 10,),
                       Text(datas[index].id.toString(),style: TextStyle(color: Colors.green,fontSize: 15,fontWeight: FontWeight.bold),),
-                      IconButton(onPressed: () {
+                      IconButton(onPressed: () async {
                         edit(datas[index], index);
+
                       }, icon: Icon(Icons.transfer_within_a_station,color: Colors.yellowAccent,)),
 
                     ],
@@ -97,9 +106,9 @@ color: Colors.blue[900],
 
     );
   }
-  edit(bank item, int index) {
+  edit(bank item, int index) async {
     balance_controller.text = datas[index].balance.toString();
-
+    [transferamount_controller.text = "0",];
     var alert = AlertDialog(
       backgroundColor: Colors.black,
       title: new Text("Transfer",style: TextStyle(color: Colors.white),),
@@ -142,7 +151,7 @@ color: Colors.blue[900],
                 "email": item.email,
               });
               await db.updateItem(recieverbalance);
-              setState(() {
+              setState(()  {
                 getData();
               });
               //redrawing scree
@@ -156,7 +165,7 @@ color: Colors.blue[900],
               await db.updateItem(senderbalance);
               db.TransferDB(transfer(amount:int.parse( transferamount_controller.text),sender:int.parse( widget.id.toString()),receiver: item.id));
               setState(() {
-
+   getData();
               });
               bar2.show(context);
             }
@@ -165,7 +174,12 @@ bar.show(context);
             }
 
 
-            Navigator.pop(context);
+            await Get.to(()=> customerprofile(id: widget.id,name: widget.name,email: widget.email,balance: (int.parse(widget.balance.toString())) -
+                (int.parse(transferamount_controller.text)),
+            ),);
+            setState(() {
+              getData();
+            });
           },
           child: new Text("Transfer",style: TextStyle(color: Colors.blue[900]),),
         ),
@@ -184,6 +198,7 @@ bar.show(context);
         builder: (context) {
           return alert;
         });
+
   }
 }
 

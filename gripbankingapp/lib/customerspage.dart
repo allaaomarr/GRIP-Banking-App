@@ -15,9 +15,9 @@ class customerspage extends StatefulWidget {
 }
 
 class _customerspageState extends State<customerspage> {
-  @override  void updateUi() {
+ /* @override  void updateUi() {
     setState(() {});
-  }
+  }*/
   List<bank> datas =[];
 
   bool fetching =true;
@@ -38,6 +38,8 @@ class _customerspageState extends State<customerspage> {
   void getData ()async{
     datas = await db.GetCustomersData();
     setState((){
+    //  datas;
+      datas;
       fetching =false;});
   }
   @override
@@ -75,7 +77,7 @@ SizedBox(height: 10,),
         ],
     ),
 
-        TextButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => customerprofile(name :datas[index].name.toString(),email: datas[index].email.toString(),balance: datas[index].balance,id: datas[index].id,updateUi: updateUi,)));}, child: Text("View Profile")),
+        TextButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => customerprofile(name :datas[index].name.toString(),email: datas[index].email.toString(),balance: datas[index].balance,id: datas[index].id,)));}, child: Text("View Profile")),
 
 
 
