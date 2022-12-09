@@ -24,9 +24,6 @@ class _TransferState extends State<Transfer> {
       getData();
     });
 
-
-
-
   }
   void getData ()async{
     datas = await db.GetTransferData();

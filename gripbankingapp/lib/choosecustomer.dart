@@ -7,142 +7,172 @@ import 'package:gripbankingapp/customerspage.dart';
 import 'package:gripbankingapp/transfermodel.dart';
 import 'package:snack/snack.dart';
 
-
 import 'bankdb.dart';
 import 'bankmodel.dart';
 
 class TransferProcess extends StatefulWidget {
-  String? name = "guest" ;
-  String? email  ;
+  String? name = "guest";
+  String? email;
   int? id;
   int? balance;
 
   @override
   State<TransferProcess> createState() => _TransferProcessState();
-  TransferProcess( { this.name,this.email,this.id,this.balance});
+  TransferProcess({this.name, this.email, this.id, this.balance});
 }
 
 class _TransferProcessState extends State<TransferProcess> {
-  @override  void updateUi() {
+  @override
+  void updateUi() {
     setState(() {});
   }
-  List<bank> datas =[];
- var balance_controller =TextEditingController();
- var transferamount_controller = TextEditingController();
-  final bar = SnackBar(content: Text('you donot have enough balance'),);
-  final bar2 = SnackBar(content: Text('balance transfered successfully'),);
 
-  bool fetching =true;
+  List<bank> datas = [];
+  var balance_controller = TextEditingController();
+  var transferamount_controller = TextEditingController();
+  final bar = SnackBar(
+    content: Text('you donot have enough balance'),
+  );
+  final bar2 = SnackBar(
+    content: Text('balance transfered successfully'),
+  );
+  bool fetching = true;
   late Data db;
   @override
-  void initState(){
+  void initState() {
     super.initState();
     db = Data();
-
     db.AddDB();
     getData();
-
-
-
   }
-  void getData ()async{
+
+  void getData() async {
     datas = await db.GetCustomersData();
-    setState((){
-      fetching =false;});
+    setState(() {
+      fetching = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-
-    int total =(int.parse(widget.balance.toString())) - 0;
+    int total = (int.parse(widget.balance.toString()));
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(title: Row(
-        children: [
-
-          Text("Transfer To",style: TextStyle(color: Colors.blue[900],),),
-        ],
-      ),centerTitle: true,backgroundColor: Colors.yellow[200],leading:  InkWell(  onTap: ()async { await Get.to(()=> customerprofile(id: widget.id,name: widget.name,email: widget.email,balance: total
-      ),);
-      setState(() {
-        getData();
-      });
-      },
-        child: Icon(Icons.arrow_back),), ),
-      body: fetching?
-
-      CircularProgressIndicator(): ListView.builder(
-        itemCount: 9,
-        itemBuilder: (context, index) {
-
-          if(widget.id != datas[index].id) {
-            return
-              Card(
-color: Colors.blue[900],
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Text(datas[index].name!,style: TextStyle(fontSize: 20,color: Colors.white),),
-                      SizedBox(height: 10,),
-                      Text(datas[index].id.toString(),style: TextStyle(color: Colors.green,fontSize: 15,fontWeight: FontWeight.bold),),
-                      IconButton(onPressed: () async {
-                        edit(datas[index], index);
-
-                      }, icon: Icon(Icons.transfer_within_a_station,color: Colors.yellowAccent,)),
-
-                    ],
-                  ),
-                ),
-              );
-          }
-        else  {
-          return Container();
-        }
-
-        },
-
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Text(
+              "Transfer To",
+              style: TextStyle(
+                color: Colors.blue[900],
+              ),
+            ),
+          ],
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.yellow[200],
+        leading: InkWell(
+          onTap: () async {
+            await Get.to(
+              () => customerprofile(
+                  id: widget.id,
+                  name: widget.name,
+                  email: widget.email,
+                  balance: total),
+            );
+            setState(() {
+              getData();
+            });
+          },
+          child: Icon(Icons.arrow_back),
+        ),
       ),
-
+      body: fetching
+          ? CircularProgressIndicator()
+          : ListView.builder(
+              itemCount: 9,
+              itemBuilder: (context, index) {
+                if (widget.id != datas[index].id) {
+                  return Card(
+                    color: Colors.blue[900],
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          Text(
+                            datas[index].name!,
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            datas[index].id.toString(),
+                            style: TextStyle(
+                                color: Colors.green,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          IconButton(
+                              onPressed: () async {
+                                edit(datas[index], index);
+                              },
+                              icon: Icon(
+                                Icons.transfer_within_a_station,
+                                color: Colors.yellowAccent,
+                              )),
+                        ],
+                      ),
+                    ),
+                  );
+                } else {
+                  return Container();
+                }
+              },
+            ),
     );
   }
+
   edit(bank item, int index) async {
     balance_controller.text = datas[index].balance.toString();
-    [transferamount_controller.text = "0",];
+    [
+      transferamount_controller.text = "0",
+    ];
     var alert = AlertDialog(
       backgroundColor: Colors.black,
-      title: new Text("Transfer",style: TextStyle(color: Colors.white),),
+      title: new Text(
+        "Transfer",
+        style: TextStyle(color: Colors.white),
+      ),
       content: Column(
         children: <Widget>[
-
           new Expanded(
             child: new TextFormField(
               controller: transferamount_controller,
               keyboardType: TextInputType.number,
               autofocus: true,
               decoration: InputDecoration(
-
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.yellow,),
-                  borderRadius:BorderRadius.circular(20),
-                ),
-                hintText: "Transfer Amount",
-                hintStyle: TextStyle(color: Colors.white)
-
-              ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.yellow,
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  hintText: "Transfer Amount",
+                  hintStyle: TextStyle(color: Colors.white)),
             ),
           ),
-
         ],
       ),
       actions: <Widget>[
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-
             primary: Colors.yellow[200],
           ),
           onPressed: () async {
-            if(int.parse(transferamount_controller.text) <= int.parse( widget.balance.toString()) && int.parse( widget.balance.toString()) > 0) {
+            if (int.parse(transferamount_controller.text) <=
+                    int.parse(widget.balance.toString()) &&
+                int.parse(widget.balance.toString()) > 0) {
               bank recieverbalance = bank.fromMap({
                 "name": item.name,
                 "balance": (int.parse(transferamount_controller.text)) +
@@ -151,10 +181,6 @@ color: Colors.blue[900],
                 "email": item.email,
               });
               await db.updateItem(recieverbalance);
-              setState(()  {
-                getData();
-              });
-              //redrawing scree
               bank senderbalance = bank.fromMap({
                 "name": widget.name,
                 "balance": (int.parse(widget.balance.toString())) -
@@ -163,29 +189,36 @@ color: Colors.blue[900],
                 "email": widget.email,
               });
               await db.updateItem(senderbalance);
-              db.TransferDB(transfer(amount:int.parse( transferamount_controller.text),sender:int.parse( widget.id.toString()),receiver: item.id));
-              setState(() {
-   getData();
-              });
+              db.TransferDB(transfer(
+                  amount: int.parse(transferamount_controller.text),
+                  sender: int.parse(widget.id.toString()),
+                  receiver: item.id));
+
               bar2.show(context);
-            }
-            else {
-bar.show(context);
+            } else {
+              bar.show(context);
             }
 
-
-            await Get.to(()=> customerprofile(id: widget.id,name: widget.name,email: widget.email,balance: (int.parse(widget.balance.toString())) -
-                (int.parse(transferamount_controller.text)),
-            ),);
+            await Get.to(
+              () => customerprofile(
+                id: widget.id,
+                name: widget.name,
+                email: widget.email,
+                balance: (int.parse(widget.balance.toString())) -
+                    (int.parse(transferamount_controller.text)),
+              ),
+            );
             setState(() {
               getData();
             });
           },
-          child: new Text("Transfer",style: TextStyle(color: Colors.blue[900]),),
+          child: new Text(
+            "Transfer",
+            style: TextStyle(color: Colors.blue[900]),
+          ),
         ),
         new ElevatedButton(
           style: ElevatedButton.styleFrom(
-
             primary: Colors.blue[900],
           ),
           onPressed: () => Navigator.pop(context),
@@ -198,7 +231,5 @@ bar.show(context);
         builder: (context) {
           return alert;
         });
-
   }
 }
-
