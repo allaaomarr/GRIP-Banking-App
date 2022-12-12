@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:gripbankingapp/choosecustomer.dart';
 import 'package:gripbankingapp/customerspage.dart';
+import 'package:provider/provider.dart';
 
+import 'Controller_provider.dart';
 import 'bankdb.dart';
 import 'bankmodel.dart';
 
@@ -18,43 +20,23 @@ class customerprofile extends StatefulWidget {
   @override
   State<customerprofile> createState() => _customerprofileState();
    customerprofile( { this.name,this.email,this.id,this.balance,});
-     VoidCallback? updateUi;
+
 }
 List<bank> datas =[];
-
-bool fetching =true;
 late Data db;
 
 class _customerprofileState extends State<customerprofile> {
-  @override
-  void initState(){
-    super.initState();
-    db = Data();
-    db.AddDB();
-    setState(() {
-      getData();
-    });
 
-
-
-
-  }
-  void getData ()async{
-    datas = await db.GetCustomersData();
-    setState((){
-      fetching =false;});
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title:
       Text("Profile",style: TextStyle(color: Colors.blue[900],),),
 
-          centerTitle: true,backgroundColor: Colors.yellow[200],  leading :InkWell(  onTap: ()async { await Get.to(()=> customerspage());
-        setState(() {
-          getData();
-        });
+          centerTitle: true,backgroundColor: Colors.yellow[200],  leading :InkWell(  onTap: (){
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> customerspage()));
         },
+
           child: Icon(Icons.arrow_back),),  ),
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -112,7 +94,7 @@ class _customerprofileState extends State<customerprofile> {
                        padding: const EdgeInsets.all(20),
                        child: ElevatedButton(onPressed: (){
 
-                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> TransferProcess(name: widget.name,id: widget.id,email: widget.email,balance: widget.balance,)));
+                         Navigator.push(context, MaterialPageRoute(builder: (context)=> TransferProcess(name: widget.name,id: widget.id,email: widget.email,balance: widget.balance,)));
                        }, child: Text("Transfer Money"),
 
 

@@ -16,32 +16,29 @@ class customerspage extends StatefulWidget {
 }
 
 class _customerspageState extends State<customerspage> {
-
-  List<bank> datas = [];
-
-  bool fetching = true;
-  late Data db;
+ // List<bank> datas = [];
+late Data db;
   @override
   void initState() {
     super.initState();
     db = Data();
-    db.AddDB();
-     getData ();
-   // Provider.of<Update>(context).getData();
+    Provider.of<Update>(context,listen: false).getData(db);
   }
-
+/*
   void getData() async {
     datas = await db.GetCustomersData();
-    setState(() {
+  /*  setState(() {
       fetching = false;
-    });
-  }
+    });*/
+    //Provider.of<Update>(context,listen: false).fetch(); /// PROVIDER
+  }*/
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+
           title: Text(
             "Customers",
             style: TextStyle(
@@ -53,7 +50,7 @@ class _customerspageState extends State<customerspage> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => Transfer(),
@@ -61,60 +58,63 @@ class _customerspageState extends State<customerspage> {
                 },
                 icon: Icon(Icons.compare_arrows_outlined,
                     color: Colors.blue[900], size: 30))
-          ]),
-      body: fetching
+          ],
+        leading: Icon(Icons.people_alt_outlined,color: Colors.blue[900],)  ),
+      body: Provider.of<Update>(context).fetching /// PROVIDER
           ? CircularProgressIndicator()
           : Padding(
               padding: const EdgeInsets.all(10),
               child: ListView.builder(
-                itemCount: 9,
+                itemCount: 10,
                 itemBuilder: (context, index) {
-                  return Card(
-                    color: Colors.blue[900],
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        children: [
-                          Text(
-                            datas[index].name!,
-                            style: TextStyle(fontSize: 20, color: Colors.white),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            datas[index].email!,
-                            style: TextStyle(
-                                color: Colors.green,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Row(
-                            children: [
-                              //  Text(datas[index].balance.toString(),style: TextStyle(fontSize: 20,color: Colors.white),),
-                              //  Icon(Icons.attach_money_sharp,color: Colors.yellow,),
-                            ],
-                          ),
-                          TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => customerprofile(
-                                              name:
-                                                  datas[index].name.toString(),
-                                              email:
-                                                  datas[index].email.toString(),
-                                              balance: datas[index].balance,
-                                              id: datas[index].id,
-                                            )));
-                              },
-                              child: Text("View Profile")),
-                        ],
-                      ),
-                    ),
-                  );
-                },
+
+      return Card(
+        color: Colors.blue[900],
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              Text(
+                Provider.of<Update>(context,listen: false).
+                datas[index].name!,
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                Provider.of<Update>(context,listen: false).datas[index].email!,
+                style: TextStyle(
+                    color: Colors.green,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                customerprofile(
+                                  name:
+                                  Provider.of<Update>(context,listen: false).
+                                  datas[index].name!,
+                                  email:
+                                  Provider.of<Update>(context,listen: false).
+                                  datas[index].email!,
+                                  balance: Provider.of<Update>(context,listen: false).
+                                  datas[index].balance!,
+                                  id: Provider.of<Update>(context,listen: false).
+                                  datas[index].id!,
+                                )));
+                  },
+                  child: Text("View Profile")),
+            ],
+          ),
+        ),
+      );
+    },
               ),
             ),
     );

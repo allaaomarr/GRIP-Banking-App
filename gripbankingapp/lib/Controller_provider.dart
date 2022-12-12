@@ -4,11 +4,16 @@ import 'bankmodel.dart';
 
 class Update extends ChangeNotifier {
 List<bank> datas =[];
-late Data db;
-bool fetching =true;
-  void getData ()async{
+bool fetching = true;
+ void fetch()
+ {
+   fetching = false;
+   notifyListeners();
+ }
+void getData (Data db)async{
+    // db = Data();
     datas = await db.GetCustomersData();
-      fetching =false;
+    fetching = false;
       notifyListeners();
   }
 

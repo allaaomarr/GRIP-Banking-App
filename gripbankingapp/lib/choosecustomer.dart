@@ -5,8 +5,10 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:gripbankingapp/customerprofile.dart';
 import 'package:gripbankingapp/customerspage.dart';
 import 'package:gripbankingapp/transfermodel.dart';
+import 'package:provider/provider.dart';
 import 'package:snack/snack.dart';
 
+import 'Controller_provider.dart';
 import 'bankdb.dart';
 import 'bankmodel.dart';
 
@@ -22,12 +24,6 @@ class TransferProcess extends StatefulWidget {
 }
 
 class _TransferProcessState extends State<TransferProcess> {
-  @override
-  void updateUi() {
-    setState(() {});
-  }
-
-  List<bank> datas = [];
   var balance_controller = TextEditingController();
   var transferamount_controller = TextEditingController();
   final bar = SnackBar(
@@ -36,22 +32,19 @@ class _TransferProcessState extends State<TransferProcess> {
   final bar2 = SnackBar(
     content: Text('balance transfered successfully'),
   );
-  bool fetching = true;
+ // List<bank> datas = [];
   late Data db;
   @override
   void initState() {
     super.initState();
     db = Data();
-    db.AddDB();
-    getData();
+    Provider.of<Update>(context,listen: false).getData(db);
   }
 
-  void getData() async {
+/*  void getData() async {
     datas = await db.GetCustomersData();
-    setState(() {
-      fetching = false;
-    });
-  }
+    Provider.of<Update>(context, listen: false).fetch();
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -72,27 +65,29 @@ class _TransferProcessState extends State<TransferProcess> {
         centerTitle: true,
         backgroundColor: Colors.yellow[200],
         leading: InkWell(
-          onTap: () async {
-            await Get.to(
-              () => customerprofile(
+          onTap: ()  {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                builder: (context) =>
+          customerprofile(
                   id: widget.id,
                   name: widget.name,
                   email: widget.email,
                   balance: total),
-            );
-            setState(() {
-              getData();
-            });
+            ),);
+            //   Provider.of<Update>(context,listen: false).getData(db); /// PROVIDER
           },
           child: Icon(Icons.arrow_back),
         ),
       ),
-      body: fetching
+      body: Provider.of<Update>(context).fetching
           ? CircularProgressIndicator()
           : ListView.builder(
               itemCount: 9,
               itemBuilder: (context, index) {
-                if (widget.id != datas[index].id) {
+                if (widget.id != Provider.of<Update>(context).
+                datas[index].id) {
                   return Card(
                     color: Colors.blue[900],
                     child: Padding(
@@ -100,6 +95,7 @@ class _TransferProcessState extends State<TransferProcess> {
                       child: Column(
                         children: [
                           Text(
+                            Provider.of<Update>(context).
                             datas[index].name!,
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
@@ -107,6 +103,7 @@ class _TransferProcessState extends State<TransferProcess> {
                             height: 10,
                           ),
                           Text(
+                            Provider.of<Update>(context).
                             datas[index].id.toString(),
                             style: TextStyle(
                                 color: Colors.green,
@@ -115,7 +112,8 @@ class _TransferProcessState extends State<TransferProcess> {
                           ),
                           IconButton(
                               onPressed: () async {
-                                edit(datas[index], index);
+                                edit(Provider.of<Update>(context,listen: false).
+                                datas[index], index);
                               },
                               icon: Icon(
                                 Icons.transfer_within_a_station,
@@ -134,7 +132,7 @@ class _TransferProcessState extends State<TransferProcess> {
   }
 
   edit(bank item, int index) async {
-    balance_controller.text = datas[index].balance.toString();
+    balance_controller.text = Provider.of<Update>(context,listen: false).datas[index].balance.toString();
     [
       transferamount_controller.text = "0",
     ];
@@ -198,8 +196,19 @@ class _TransferProcessState extends State<TransferProcess> {
             } else {
               bar.show(context);
             }
-
-            await Get.to(
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => customerprofile(
+                  id: widget.id,
+                  name: widget.name,
+                  email: widget.email,
+                  balance: (int.parse(widget.balance.toString())) -
+                      (int.parse(transferamount_controller.text)),
+                ),
+              ),
+            );
+            /*     await Get.to(
               () => customerprofile(
                 id: widget.id,
                 name: widget.name,
@@ -207,10 +216,7 @@ class _TransferProcessState extends State<TransferProcess> {
                 balance: (int.parse(widget.balance.toString())) -
                     (int.parse(transferamount_controller.text)),
               ),
-            );
-            setState(() {
-              getData();
-            });
+            );*/
           },
           child: new Text(
             "Transfer",

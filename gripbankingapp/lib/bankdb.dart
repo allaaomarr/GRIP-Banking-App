@@ -30,7 +30,7 @@ class Data {
   Future<Database> createDB() async {
     String dataBasePath = await getDatabasesPath();
     print(dataBasePath);
-    String path = join(dataBasePath, 'bank.db');
+    String path = join(dataBasePath, 'data.db');
     print(path);
     return openDatabase(path,
         version: 1,
@@ -45,7 +45,7 @@ class Data {
   Future<Database> createTransferDB() async {
     String dataBasePath = await getDatabasesPath();
     print(dataBasePath);
-    String path = join(dataBasePath, 'track.db');
+    String path = join(dataBasePath, 'data.db');
     print(path);
     return openDatabase(path,
         version: 1,
