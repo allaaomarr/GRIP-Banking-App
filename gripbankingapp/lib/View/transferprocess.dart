@@ -193,21 +193,23 @@ class _TransferProcessState extends State<TransferProcess> {
                   receiver: item.id));
 
               bar2.show(context);
+
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => customerprofile(
+                    id: widget.id,
+                    name: widget.name,
+                    email: widget.email,
+                    balance: (int.parse(widget.balance.toString())) -
+                        (int.parse(transferamount_controller.text)),
+                  ),
+                ),
+              );
             } else {
               bar.show(context);
+              Navigator.pop(context);
             }
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => customerprofile(
-                  id: widget.id,
-                  name: widget.name,
-                  email: widget.email,
-                  balance: (int.parse(widget.balance.toString())) -
-                      (int.parse(transferamount_controller.text)),
-                ),
-              ),
-            );
             /*     await Get.to(
               () => customerprofile(
                 id: widget.id,
