@@ -1,9 +1,9 @@
-import 'package:gripbankingapp/transfermodel.dart';
-import 'package:gripbankingapp/transfers.dart';
+import 'package:gripbankingapp/Model/transfermodel.dart';
+import 'package:gripbankingapp/View/transfers.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-import 'bankmodel.dart';
+import '../bankmodel.dart';
 class Data {
   List<Map> expectedList = [
     {'name': 'Ray O’Sun', 'balance': 456,  'email': "Ray O’Sun@gmail.com"},

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gripbankingapp/transfermodel.dart';
+import 'package:gripbankingapp/Model/transfermodel.dart';
 
-import 'bankdb.dart';
+import '../Controller/bankdb.dart';
 
 class Transfer extends StatefulWidget {
   const Transfer({Key? key}) : super(key: key);

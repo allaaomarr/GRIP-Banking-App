@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gripbankingapp/Controller_provider.dart';
-import 'package:gripbankingapp/transfers.dart';
+import 'package:gripbankingapp/Controller/Controller_provider.dart';
+import 'package:gripbankingapp/View/transfers.dart';
 import 'package:provider/provider.dart';
 
-import 'bankdb.dart';
-import 'bankmodel.dart';
+import '../Controller/bankdb.dart';
+import '../bankmodel.dart';
 import 'customerprofile.dart';
 
 class customerspage extends StatefulWidget {

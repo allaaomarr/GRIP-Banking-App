@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'bankdb.dart';
-import 'bankmodel.dart';
+import '../bankmodel.dart';
 
 class Update extends ChangeNotifier {
 List<bank> datas =[];

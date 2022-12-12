@@ -1,4 +1,4 @@
-import 'package:gripbankingapp/transfers.dart';
+import 'package:gripbankingapp/View/transfers.dart';
 
 class transfer {
   int?  id;

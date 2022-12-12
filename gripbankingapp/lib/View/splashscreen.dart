@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gripbankingapp/customerspage.dart';
+import 'package:gripbankingapp/View/customerspage.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-import 'bankdb.dart';
-import 'bankmodel.dart';
+import '../Controller/bankdb.dart';
+import '../bankmodel.dart';
 
 
 class SplashScreen extends StatefulWidget {

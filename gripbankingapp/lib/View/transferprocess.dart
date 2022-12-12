@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:gripbankingapp/customerprofile.dart';
-import 'package:gripbankingapp/customerspage.dart';
-import 'package:gripbankingapp/transfermodel.dart';
+import 'package:gripbankingapp/View/customerprofile.dart';
+import 'package:gripbankingapp/View/customerspage.dart';
+import 'package:gripbankingapp/Model/transfermodel.dart';
 import 'package:provider/provider.dart';
 import 'package:snack/snack.dart';
 
-import 'Controller_provider.dart';
-import 'bankdb.dart';
-import 'bankmodel.dart';
+import '../Controller/Controller_provider.dart';
+import '../Controller/bankdb.dart';
+import '../bankmodel.dart';
 
 class TransferProcess extends StatefulWidget {
   String? name = "guest";

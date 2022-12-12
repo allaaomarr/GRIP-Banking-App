@@ -1,14 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:gripbankingapp/choosecustomer.dart';
-import 'package:gripbankingapp/customerspage.dart';
-import 'package:provider/provider.dart';
 
-import 'Controller_provider.dart';
-import 'bankdb.dart';
-import 'bankmodel.dart';
+import 'package:gripbankingapp/View/transferprocess.dart';
+import 'package:gripbankingapp/View/customerspage.dart';
+
+import '../Controller/bankdb.dart';
+import '../bankmodel.dart';
 
 class customerprofile extends StatefulWidget {
 
